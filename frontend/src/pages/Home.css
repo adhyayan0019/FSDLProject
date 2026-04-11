@@ -1,0 +1,342 @@
+/* === HERO === */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.hero__content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 0 1.5rem;
+  max-width: 800px;
+}
+
+.hero__badge {
+  display: inline-block;
+  font-family: 'Manrope', sans-serif;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero__title {
+  font-style: italic;
+  font-size: clamp(3rem, 8vw, 6rem);
+  color: white;
+  margin-bottom: 1.5rem;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.hero__subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.15rem;
+  max-width: 640px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.7;
+}
+
+.hero__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.hero__cta .btn-primary {
+  padding: 18px 40px;
+  font-size: 0.75rem;
+  box-shadow: 0 4px 20px rgba(123, 83, 44, 0.3);
+}
+
+.hero__cta .btn-primary:hover {
+  transform: scale(1.05);
+}
+
+.hero__cta .btn-outline {
+  padding: 18px 40px;
+  font-size: 0.75rem;
+}
+
+.hero__scroll {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  animation: bounce 2s infinite;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.hero__scroll .material-symbols-outlined {
+  font-size: 2rem;
+}
+
+/* === OFFERINGS === */
+.offerings {
+  padding: 8rem 0;
+  background: var(--color-surface);
+}
+
+.offerings__header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 2rem;
+  margin-bottom: 5rem;
+}
+
+.offerings__label {
+  display: block;
+  font-family: 'Manrope', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.8rem;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+.offerings__title {
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+  color: var(--color-on-surface);
+  line-height: 1.1;
+  margin-bottom: 15px;
+}
+
+.offerings__desc {
+  color: var(--color-on-surface-variant);
+  max-width: 380px;
+  line-height: 1.6;
+}
+
+.offerings__grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2rem;
+}
+
+.offerings__card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.offerings__card--wide {
+  grid-column: span 7;
+  aspect-ratio: 16/10;
+}
+
+.offerings__card--tall {
+  grid-column: span 5;
+}
+
+.offerings__card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s ease;
+}
+
+.offerings__card:hover .offerings__card-img {
+  transform: scale(1.1);
+}
+
+.offerings__card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent 60%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2.5rem;
+}
+
+.offerings__card-overlay h3 {
+  color: white;
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.offerings__card-overlay p {
+  color: rgba(255, 255, 255, 0.8);
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.95rem;
+}
+
+/* === HERITAGE === */
+.heritage {
+  padding: 8rem 0;
+  background: var(--color-surface-container-low);
+  overflow: hidden;
+}
+
+.heritage__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+.heritage__images {
+  position: relative;
+}
+
+.heritage__frame {
+  background: var(--color-surface-container-lowest);
+  padding: 1rem;
+  box-shadow: var(--shadow-xl);
+  display: inline-block;
+}
+
+.heritage__frame img {
+  border-radius: 0.5rem;
+  width: 100%;
+  max-width: 480px;
+  display: block;
+}
+
+.heritage__frame--main {
+  transform: rotate(3deg);
+}
+
+.heritage__frame--accent {
+  position: absolute;
+  bottom: -40px;
+  right: -40px;
+  transform: rotate(-6deg);
+  max-width: 280px;
+}
+
+.heritage__frame--accent img {
+  max-width: 280px;
+}
+
+.heritage__label {
+  display: block;
+  font-family: 'Manrope', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.8rem;
+  color: var(--color-primary);
+  margin-bottom: 1.5rem;
+}
+
+.heritage__title {
+  font-style: italic;
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+  color: var(--color-on-surface);
+  margin-bottom: 2rem;
+  line-height: 1.1;
+}
+
+.heritage__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  color: var(--color-on-surface-variant);
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.heritage__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 3rem;
+  color: var(--color-primary);
+  font-family: 'Manrope', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.8rem;
+}
+
+.heritage__cta-line {
+  display: inline-block;
+  width: 48px;
+  height: 1px;
+  background: var(--color-primary);
+  transition: width 0.3s ease;
+}
+
+.heritage__cta:hover .heritage__cta-line {
+  width: 80px;
+}
+
+/* === FAB === */
+.fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 40;
+}
+
+.fab__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-container));
+  color: var(--color-on-primary);
+  box-shadow: 0 8px 24px rgba(123, 83, 44, 0.3);
+  transition: var(--transition);
+}
+
+.fab__btn:hover {
+  transform: scale(1.1);
+}
+
+.fab__btn .material-symbols-outlined {
+  font-size: 1.75rem;
+}
+
+/* === Responsive === */
+@media (max-width: 900px) {
+  .offerings__grid {
+    grid-template-columns: 1fr;
+  }
+  .offerings__card--wide,
+  .offerings__card--tall {
+    grid-column: span 1;
+    aspect-ratio: 16/10;
+  }
+  .heritage__inner {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .heritage__frame--accent {
+    display: none;
+  }
+  .hero__title {
+    font-size: 3rem;
+  }
+}

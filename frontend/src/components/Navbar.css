@@ -1,0 +1,122 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: rgba(252, 249, 244, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: var(--transition);
+}
+
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 3rem;
+  max-width: 1536px;
+  margin: 0 auto;
+}
+
+.nav-logo {
+  font-family: 'Noto Serif', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-on-surface);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.nav-link {
+  font-family: 'Noto Serif', serif;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  color: var(--color-on-surface);
+  opacity: 0.6;
+  transition: all 0.3s ease;
+  padding-bottom: 4px;
+  border-bottom: 1px solid transparent;
+}
+
+.nav-link:hover {
+  opacity: 1;
+  color: var(--color-primary);
+}
+
+.nav-link--active {
+  color: var(--color-primary);
+  opacity: 1;
+  border-bottom-color: var(--color-primary);
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-btn {
+  padding: 12px 32px;
+  font-size: 0.65rem;
+}
+
+.mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.mobile-toggle .material-symbols-outlined {
+  font-size: 1.75rem;
+}
+
+@media (max-width: 900px) {
+  .nav-inner {
+    padding: 1rem 1.5rem;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--color-surface);
+    flex-direction: column;
+    justify-content: center;
+    gap: 2.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 40;
+  }
+
+  .nav-links.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .nav-link {
+    font-size: 1.5rem;
+  }
+
+  .mobile-toggle {
+    display: block;
+    position: relative;
+    z-index: 60;
+  }
+
+  .nav-actions {
+    z-index: 60;
+  }
+}

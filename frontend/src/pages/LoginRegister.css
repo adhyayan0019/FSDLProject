@@ -1,0 +1,13 @@
+.auth-page {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 20px;
+}
+.auth-form-wrapper {
+    max-width: 500px;
+    width: 100%;
+    padding: 40px;
+    margin: 0 auto;
+}
