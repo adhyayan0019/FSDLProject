@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Calendar, Users, Home } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import AvailabilityCalendar from '../components/AvailabilityCalendar';
 import './Booking.css';
 
 const Booking = () => {
@@ -19,7 +20,8 @@ const Booking = () => {
   const [status, setStatus] = useState({ loading: false, success: false, error: null });
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -97,22 +99,6 @@ const Booking = () => {
                 </div>
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Check-in Date *</label>
-                <div className="input-with-icon">
-                  <Calendar className="input-icon" size={18} />
-                  <input type="date" name="checkIn" className="form-control" value={formData.checkIn} onChange={handleChange} required />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Check-out Date *</label>
-                <div className="input-with-icon">
-                  <Calendar className="input-icon" size={18} />
-                  <input type="date" name="checkOut" className="form-control" value={formData.checkOut} onChange={handleChange} required />
-                </div>
-              </div>
-
               <div className="form-group full-width">
                 <label className="form-label">Accommodation Type *</label>
                 <div className="input-with-icon">
@@ -126,6 +112,19 @@ const Booking = () => {
                   </select>
                 </div>
               </div>
+
+              <div className="form-group full-width">
+                <label className="form-label">Select Booking Dates *</label>
+                <div className="calendar-instruction">Please select both Check-In and Check-Out dates on the calendar.</div>
+                <AvailabilityCalendar 
+                    roomType={formData.roomType} 
+                    checkIn={formData.checkIn} 
+                    checkOut={formData.checkOut} 
+                    onChange={handleChange} 
+                />
+              </div>
+
+
 
               <div className="form-group full-width">
                 <label className="form-label">Special Requests (Optional)</label>

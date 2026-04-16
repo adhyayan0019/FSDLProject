@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Booking = require('../models/Booking');
+const RoomInventory = require('../models/RoomInventory');
 const { authMiddleware } = require('./auth');
 const twilio = require('twilio');
 
@@ -63,14 +64,21 @@ router.post('/bookings/:id/confirm', async (req, res) => {
             const message = `Hello ${booking.name}, your booking is confirmed! 🎉`;
             const twilioPhoneNumber = booking.phone.startsWith('+') ? booking.phone : '+91' + booking.phone;
             
-            await client.messages.create({
+            const msgPayload = {
                 body: message,
-                messagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID,
                 to: twilioPhoneNumber
-            });
-            console.log(`Twilio SMS sent successfully to ${twilioPhoneNumber}`);
+            };
+            // Fallback to direct phone number if messaging service is not set
+            if (process.env.TWILIO_PHONE_NUMBER) {
+                msgPayload.from = process.env.TWILIO_PHONE_NUMBER;
+            } else {
+                msgPayload.messagingServiceSid = process.env.TWILIO_MESSAGING_SERVICE_SID;
+            }
+            
+            const twilioRes = await client.messages.create(msgPayload);
+            console.log(`Twilio SMS sent successfully to ${twilioPhoneNumber}. SID: ${twilioRes.sid}`);
         } catch (smsErr) {
-            console.error('Failed to send SMS via Twilio', smsErr.message);
+            console.error('Failed to send SMS via Twilio', smsErr.message, smsErr.code, smsErr.moreInfo);
         }
 
         res.status(200).json({ message: 'Booking confirmed and Twilio SMS triggered' });
@@ -97,4 +105,70 @@ router.get('/metrics', async (req, res) => {
     }
 });
 
+// Inventory Management Routes
+router.get('/inventory', async (req, res) => {
+    try {
+        const inventory = await RoomInventory.find();
+        // Serialize Mongoose Maps to plain objects for frontend
+        const serialized = inventory.map(item => ({
+            roomType: item.roomType,
+            totalCapacity: item.totalCapacity,
+            dateCapacities: item.dateCapacities ? Object.fromEntries(item.dateCapacities) : {}
+        }));
+        res.json(serialized);
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to fetch inventory' });
+    }
+});
+
+router.put('/inventory', async (req, res) => {
+    const { roomType, totalCapacity, date, capacity } = req.body;
+
+    if (!roomType) return res.status(400).json({ error: 'roomType is required' });
+
+    try {
+        let updatedDoc;
+
+        if (date !== undefined && date !== null && date !== '') {
+            // ── Date-specific override ──────────────────────────────────────
+            // Use MongoDB dot-notation to set a single key inside the Map.
+            // This is the ONLY reliable way to update Mongoose Maps.
+            const dateKey = String(date);
+            const capValue = Number(capacity);   // allows 0 (fully blocks that date)
+
+            updatedDoc = await RoomInventory.findOneAndUpdate(
+                { roomType },
+                {
+                    $set: { [`dateCapacities.${dateKey}`]: capValue },
+                    // If the document doesn't exist yet, also set a default totalCapacity
+                    $setOnInsert: { totalCapacity: 5 }
+                },
+                { upsert: true, new: true, runValidators: true }
+            );
+        } else if (totalCapacity !== undefined) {
+            // ── Global default capacity ─────────────────────────────────────
+            updatedDoc = await RoomInventory.findOneAndUpdate(
+                { roomType },
+                { $set: { totalCapacity: Number(totalCapacity) } },
+                { upsert: true, new: true, runValidators: true }
+            );
+        } else {
+            return res.status(400).json({ error: 'Provide either totalCapacity or date+capacity' });
+        }
+
+        res.json({
+            roomType: updatedDoc.roomType,
+            totalCapacity: updatedDoc.totalCapacity,
+            dateCapacities: updatedDoc.dateCapacities
+                ? Object.fromEntries(updatedDoc.dateCapacities)
+                : {}
+        });
+
+    } catch (err) {
+        console.error('Inventory save error:', err);
+        res.status(500).json({ error: 'Failed to update inventory', detail: err.message });
+    }
+});
+
 module.exports = router;
+
